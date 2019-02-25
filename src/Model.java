@@ -1,3 +1,4 @@
+import acm.program.*;
 
 public class Model {
 

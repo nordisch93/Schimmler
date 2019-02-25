@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/nordisch/Documents/WS1819/ProgOO/Schimmler/lib/acm.jar" sourcepath="/home/nordisch/Documents/WS1819/ProgOO/Schimmler/lib/acm.zip"/>
+	<classpathentry kind="lib" path="./lib/acm.jar" sourcepath="./lib/acm.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

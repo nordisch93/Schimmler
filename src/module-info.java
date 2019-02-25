@@ -1,0 +1,9 @@
+/**
+ * 
+ */
+/**
+ * @author nordisch
+ *
+ */
+module schimmler {
+}

@@ -1,4 +1,6 @@
-import acm.program.*;
+package schimmler;
+
+import acm.program.GraphicsProgram;
 
 public class Model extends GraphicsProgram{
 

@@ -41,8 +41,14 @@ public class Model {
 				fragments.add(new Fragment(1, 1));
 				break;
 			case 4://lower right
+				fragments.add(new Fragment(0, 1));
+				fragments.add(new Fragment(1, 0));
+				fragments.add(new Fragment(1, 1));
 				break;
 			case 5://lower left
+				fragments.add(new Fragment(0, 0));
+				fragments.add(new Fragment(1, 0));
+				fragments.add(new Fragment(1, 1));
 				break;
 			}
 			

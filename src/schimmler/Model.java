@@ -7,6 +7,7 @@ import schimmler.Model.Block.Fragment;
 
 public class Model {
 	private Board board;
+	private int currentSelection = 0;
 
 	public int[][] getBoard(){
 		return board.getSquares();
@@ -16,6 +17,18 @@ public class Model {
 		board = new Board();
 	}
 
+	public int getCurrentSelection() {
+		return currentSelection;
+	}
+
+	public void setCurrentSelection(int currentSelection) {
+		this.currentSelection = currentSelection;
+	}
+
+	public boolean moveBlock(int blockId, int direction) {
+		return board.moveBlock(blockId, direction);
+	}
+	
 	class Block {
 		int type;
 		int x;
@@ -101,7 +114,7 @@ public class Model {
 				}
 			}
 
-			Block[] blocks = new Block[5];
+			this.blocks = new Block[5];
 			//square block
 			blocks[0] = new Block(1, 1, 1);
 			addBlock(blocks[0]);
@@ -116,8 +129,7 @@ public class Model {
 			addBlock(blocks[3]);
 			//lower left
 			blocks[4] = new Block(5, 0, 2);
-			addBlock(blocks[4]);			
-			int z = 0;
+			addBlock(blocks[4]);
 		}
 
 		public int getSquare(int x, int y) {
@@ -138,7 +150,7 @@ public class Model {
 			return squares;
 		}
 
-		public boolean moveBlock(Block block, int direction) {
+		public boolean moveBlock(int blockId, int direction) {
 			int deltaX = 0;
 			int deltaY = 0;
 			switch (direction) {
@@ -159,29 +171,31 @@ public class Model {
 			}
 
 			// check if block can be moved
-			if (block.getY() > 3 || block.getX() > 1) {
+			if ((blocks[blockId-1].getY() + deltaY > 4 || blocks[blockId-1].getX()+deltaX > 2)||
+					(blocks[blockId-1].getY() + deltaY < 0 || blocks[blockId-1].getX()+deltaX < 0))
+			{
 				// can't move block off board
 				return false;
 			}
-			for (Fragment f : block.fragments) {
-				int fragmentX = block.getX() + f.x;
-				int fragmentY = block.getY() + f.y;
+			for (Fragment f : blocks[blockId-1].fragments) {
+				int fragmentX = blocks[blockId-1].getX() + f.x;
+				int fragmentY = blocks[blockId-1].getY() + f.y;
 
 				if (squares[fragmentX + deltaX][fragmentY + deltaY] != 0
-						|| squares[fragmentX + deltaX][fragmentY + deltaY] != block.type) {
+						&& squares[fragmentX + deltaX][fragmentY + deltaY] != blocks[blockId-1].type) {
 					// move is blocked by other blocks
 					return false;
 				}
 			}
 			// actually move the block
-			for (Fragment f : block.fragments) {
-				squares[block.getX() + f.x][block.getY()] = 0;
+			for (Fragment f : blocks[blockId-1].fragments) {
+				squares[blocks[blockId-1].getX() + f.x][blocks[blockId-1].getY() + f.y] = 0;
 			}
 
-			block.setY(block.getY() + 1);
+			blocks[blockId-1].setY(blocks[blockId-1].getY() + 1);
 
-			for (Fragment f : block.fragments) {
-				squares[block.getX() + f.x + deltaX][block.getY() + deltaY] = block.type;
+			for (Fragment f : blocks[blockId-1].fragments) {
+				squares[blocks[blockId-1].getX() + f.x + deltaX][blocks[blockId-1].getY() + f.y + deltaY] = blocks[blockId-1].type;
 			}
 			return true;
 		}

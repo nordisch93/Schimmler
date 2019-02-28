@@ -10,8 +10,20 @@ public class View {
 	private int currentSelection;
 	private GCanvas canvas;
 	final double squareSize = 100;
-	final Color normalColors[] = {Color.WHITE, Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW, Color.ORANGE};
-	final Color brightColors[] = {Color.WHITE, Color.CYAN, Color.RED, Color.GREEN, Color.YELLOW, Color.ORANGE};
+	final Color normalColors[] = {
+			CustomColor.COLOR_WHITE.getValue(),
+			CustomColor.COLOR_DARKPURPLE.getValue(),
+			CustomColor.COLOR_DARKORANGE.getValue(),			
+			CustomColor.COLOR_DARKBLUE.getValue(),
+			CustomColor.COLOR_DARKGREEN.getValue(),
+			CustomColor.COLOR_DARKRED.getValue(),};
+	final Color brightColors[] = {
+			CustomColor.COLOR_WHITE.getValue(),
+			CustomColor.COLOR_LIGHTPURPLE.getValue(),
+			CustomColor.COLOR_LIGHTORANGE.getValue(),			
+			CustomColor.COLOR_LIGHTBLUE.getValue(),
+			CustomColor.COLOR_LIGHTGREEN.getValue(),
+			CustomColor.COLOR_LIGHTRED.getValue(),};
 	//desktopview
 	public View(GCanvas canvas, int[][] initialBoard) {
 		currentBoard = initialBoard;
@@ -47,7 +59,9 @@ public class View {
 	public void update(int[][]currentBoard, int currentSelection) {
 		this.currentBoard = currentBoard;
 		this.currentSelection = currentSelection;
+		//clear canvas
 		canvas.removeAll();
+		
 		for(int x = 0; x < 4; x++) {
 			for(int y = 0; y < 6; y++) {
 				GRect rect = new GRect(squareSize * x, squareSize * y, squareSize, squareSize);
@@ -68,5 +82,28 @@ public class View {
 		rect.setColor(Color.BLACK);
 		canvas.add(rect);
 	}
+	
+	private enum CustomColor{
+		COLOR_DARKRED (230,0,0),
+		COLOR_DARKGREEN(0,153,0),
+		COLOR_DARKORANGE(255,102,0),
+		COLOR_DARKPURPLE(204,0,153),
+		COLOR_DARKBLUE(41,41,163),
+		COLOR_WHITE(255,255,255),
+		
+		COLOR_LIGHTRED (255,102,102),
+		COLOR_LIGHTGREEN(26,255,26),
+		COLOR_LIGHTORANGE(255,179,128),
+		COLOR_LIGHTPURPLE(255,77,210),
+		COLOR_LIGHTBLUE(114,114,218);
+		
+		private Color value;
+		
+		private CustomColor(int r, int g, int b){
+			this.value = new Color(r,g,b);
+		}
+		
+		public Color getValue() { return value;}	
+	}	
 
 }

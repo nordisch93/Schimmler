@@ -31,14 +31,14 @@ public class Model {
 		}
 	}
 
-	public boolean moveBlock(int blockId, int direction) {
+	public void moveBlock(int blockId, Direction direction) {
 		boolean success = board.moveBlock(blockId, direction);
 		if (success) {
 			for (View v : views) {
 				v.update(board.getSquares(), currentSelection);
 			}
 		}
-		return success;
+		return;
 	}
 	
 
@@ -174,20 +174,20 @@ public class Model {
 			return squares;
 		}
 		
-		public boolean moveBlock(int blockId, int direction) {
+		public boolean moveBlock(int blockId, Direction direction) {
 			int deltaX = 0;
 			int deltaY = 0;
 			switch (direction) {
-			case 0: // up
+			case DIRECTION_UP: // up
 				deltaY = -1;
 				break;
-			case 1: // right
+			case DIRECTION_RIGHT: // right
 				deltaX = 1;
 				break;
-			case 2: // down
+			case DIRECTION_DOWN: // down
 				deltaY = 1;
 				break;
-			case 3: // left
+			case DIRECTION_LEFT: // left
 				deltaX = -1;
 				break;
 			default:

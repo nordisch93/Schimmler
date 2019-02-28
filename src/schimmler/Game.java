@@ -28,12 +28,6 @@ public class Game extends GraphicsProgram {
 			GCanvas canvas = getGCanvas();
 			this.view = new View(canvas, model.getBoard());
 			model.addView(view);
-			//view.update(model.getBoard(), model.getCurrentSelection());
-
-			while(true) {
-				
-			}
-
 		}
 	}
 	

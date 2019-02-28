@@ -3,6 +3,7 @@ package schimmler;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+
 public class Controller {
 	
 	private Model model;
@@ -16,12 +17,12 @@ public class Controller {
 		return true;
 	}
 	
-	public boolean moveBlock(int direction) {
+	public void moveBlock(Direction direction) {
 		int currentBlock = model.getCurrentSelection();
 		if(currentBlock == 0)
-			return false;
+			return;
 		else
-			return model.moveBlock(currentBlock, direction);
+			model.moveBlock(currentBlock, direction);
 	}
 	
 	public void mouseClicked(MouseEvent e) {
@@ -48,24 +49,22 @@ public class Controller {
 		switch(e.getKeyCode()) {
 		case KeyEvent.VK_W:
 		case KeyEvent.VK_UP:
-			moveBlock(0);
+			moveBlock(Direction.DIRECTION_UP);
 			break;
 		case KeyEvent.VK_S:				
 		case KeyEvent.VK_DOWN:
-			moveBlock(2);
+			moveBlock(Direction.DIRECTION_DOWN);
 			break;
 		case KeyEvent.VK_A:
 		case KeyEvent.VK_LEFT:
-			moveBlock(3);
+			moveBlock(Direction.DIRECTION_LEFT);
 			break;
 		case KeyEvent.VK_D:
 		case KeyEvent.VK_RIGHT:
-			moveBlock(1);
+			moveBlock(Direction.DIRECTION_RIGHT);
 			break;
 		default:
 			return;	
 		}
-	}
-	
-	
+	}	
 }

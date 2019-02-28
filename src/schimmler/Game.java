@@ -31,7 +31,7 @@ public class Game extends GraphicsProgram {
 
 		if (desktopView) {
 			GCanvas canvas = getGCanvas();
-			this.view = new View(canvas, model);
+			this.view = new DesktopView(model, canvas);
 			model.addView(view);
 		}
 	}

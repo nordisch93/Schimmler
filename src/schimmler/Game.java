@@ -12,12 +12,17 @@ public class Game extends GraphicsProgram {
 	Controller controller;
 	Model model;
 	
+	/**
+	 * Initializes the program by adding eventListeners.
+	 */
 	public void init() {
-		// initialize eventListeners
 		addMouseListeners();
 		addKeyListeners();
 	}
 
+	/**
+	 * Initializes instances of a model, a controller and several views.
+	 */
 	public void run() {
 		
 		boolean desktopView = true;
@@ -26,15 +31,27 @@ public class Game extends GraphicsProgram {
 
 		if (desktopView) {
 			GCanvas canvas = getGCanvas();
-			this.view = new View(canvas, model.getBoard());
+			this.view = new View(canvas, model);
 			model.addView(view);
 		}
 	}
 	
+	/**
+	 * Catches Key inputs and delegates them to the controller.
+	 * 
+	 * @param e The KeyEvent that triggered the function
+	 * 
+	 */
 	public void keyReleased(KeyEvent e) {
 		controller.keyReleased(e);
 	}
 	
+	/**
+	 * Catches mouse clicks and delegates them to the controller.
+	 * 
+	 * @param e The MouseEvent that triggered the function
+	 * 
+	 */
 	public void mouseClicked(MouseEvent e) {
 		controller.mouseClicked(e);
 	}

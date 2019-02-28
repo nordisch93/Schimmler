@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import schimmler.Model.Block.Fragment;
 
 public class Model {
+	private boolean puzzleSolved = false;
 	private Board board;
 	private int currentSelection = 0;
 	private ArrayList<View> views;
+	private final int solvedBoard[][] = {{2,2,5,5,0,0},{2,0,0,5,1,1},{3,0,0,4,1,1},{3,3,4,4,0,0}};
 
 	public Model() {
 		this.board = new Board();
@@ -27,7 +29,7 @@ public class Model {
 	public void setCurrentSelection(int currentSelection) {
 		this.currentSelection = currentSelection;
 		for(View v : views) {
-			v.update(board.getSquares(), currentSelection);
+			v.update();
 		}
 	}
 
@@ -35,7 +37,10 @@ public class Model {
 		boolean success = board.moveBlock(blockId, direction);
 		if (success) {
 			for (View v : views) {
-				v.update(board.getSquares(), currentSelection);
+				if(board.getSquares().equals(solvedBoard)){
+					puzzleSolved = true;
+				}
+				v.update();
 			}
 		}
 		return;
@@ -49,10 +54,14 @@ public class Model {
 	public void addView(View view) {
 		views.add(view);
 		for (View v : views) {
-			v.update(board.getSquares(), currentSelection);
+			v.update();
 		}
 	}
 	
+	public boolean isPuzzleSolved() {
+		return puzzleSolved;
+	}
+
 	class Block {
 		int type;
 		int x;

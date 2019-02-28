@@ -9,6 +9,7 @@ public class Model {
 	private boolean puzzleSolved = false;
 	private Board board;
 	private int currentSelection = 0;
+	private DesktopView mainView;
 	private ArrayList<View> views;
 	private final int solvedBoard[][] = {{2,2,5,5,0,0},{2,0,0,5,1,1},{3,0,0,4,1,1},{3,3,4,4,0,0}};
 
@@ -28,6 +29,7 @@ public class Model {
 
 	public void setCurrentSelection(int currentSelection) {
 		this.currentSelection = currentSelection;
+		mainView.update();
 		for(View v : views) {
 			v.update();
 		}
@@ -36,6 +38,7 @@ public class Model {
 	public void moveBlock(int blockId, Direction direction) {
 		boolean success = board.moveBlock(blockId, direction);
 		if (success) {
+			mainView.update();
 			for (View v : views) {
 				if(board.getSquares().equals(solvedBoard)){
 					puzzleSolved = true;
@@ -48,7 +51,7 @@ public class Model {
 	
 
 	public int getClickedBlock(int x, int y) {
-		return views.get(0).getClickedBlock(x,y);
+		return mainView.getClickedBlock(x,y);
 	}
 	
 	public void addView(View view) {
@@ -60,6 +63,16 @@ public class Model {
 	
 	public boolean isPuzzleSolved() {
 		return puzzleSolved;
+	}
+
+	public DesktopView getMainView() {
+		return mainView;
+	}
+
+
+	public void setMainView(DesktopView mainView) {
+		this.mainView = mainView;
+		mainView.update();
 	}
 
 	class Block {

@@ -41,7 +41,7 @@ public class DesktopView extends View {
 		}
 	}
 
-	public void update() {
+	@Override public void update() {
 		this.currentBoard = model.getBoard();
 		this.currentSelection = model.getCurrentSelection();
 		// clear canvas

@@ -16,7 +16,5 @@ public abstract class View {
 		this.currentSelection = model.getCurrentSelection();
 	}
 	
-	public abstract int getClickedBlock(int x, int y);
-	
 	public abstract void update();
 }

@@ -2,19 +2,22 @@ package schimmler;
 
 import java.util.ArrayList;
 
-import acm.graphics.*;
+//import acm.graphics.*;
 import schimmler.Model.Block.Fragment;
 
 public class Model {
 	private Board board;
 	private int currentSelection = 0;
+	private ArrayList<View> views;
 
-	public int[][] getBoard(){
-		return board.getSquares();
+	public Model() {
+		this.board = new Board();
+		this.views = new ArrayList<View>();
 	}
 	
-	public Model() {
-		board = new Board();
+	
+	public int[][] getBoard(){
+		return board.getSquares();
 	}
 
 	public int getCurrentSelection() {
@@ -23,10 +26,31 @@ public class Model {
 
 	public void setCurrentSelection(int currentSelection) {
 		this.currentSelection = currentSelection;
+		for(View v : views) {
+			v.update(board.getSquares(), currentSelection);
+		}
 	}
 
 	public boolean moveBlock(int blockId, int direction) {
-		return board.moveBlock(blockId, direction);
+		boolean success = board.moveBlock(blockId, direction);
+		if (success) {
+			for (View v : views) {
+				v.update(board.getSquares(), currentSelection);
+			}
+		}
+		return success;
+	}
+	
+
+	public int getClickedBlock(int x, int y) {
+		return views.get(0).getClickedBlock(x,y);
+	}
+	
+	public void addView(View view) {
+		views.add(view);
+		for (View v : views) {
+			v.update(board.getSquares(), currentSelection);
+		}
 	}
 	
 	class Block {
@@ -149,7 +173,7 @@ public class Model {
 		public int[][] getSquares(){
 			return squares;
 		}
-
+		
 		public boolean moveBlock(int blockId, int direction) {
 			int deltaX = 0;
 			int deltaY = 0;
@@ -189,13 +213,16 @@ public class Model {
 			}
 			// actually move the block
 			for (Fragment f : blocks[blockId-1].fragments) {
-				squares[blocks[blockId-1].getX() + f.x][blocks[blockId-1].getY() + f.y] = 0;
+				int fragmentX = blocks[blockId-1].getX() + f.x;
+				int fragmentY = blocks[blockId-1].getY() + f.y;
+				squares[fragmentX][fragmentY] = 0;
 			}
 
-			blocks[blockId-1].setY(blocks[blockId-1].getY() + 1);
+			blocks[blockId-1].setX(blocks[blockId-1].getX() + deltaX);
+			blocks[blockId-1].setY(blocks[blockId-1].getY() + deltaY);			
 
 			for (Fragment f : blocks[blockId-1].fragments) {
-				squares[blocks[blockId-1].getX() + f.x + deltaX][blocks[blockId-1].getY() + f.y + deltaY] = blocks[blockId-1].type;
+				squares[blocks[blockId-1].getX() + f.x][blocks[blockId-1].getY() + f.y] = blocks[blockId-1].type;
 			}
 			return true;
 		}

@@ -6,6 +6,7 @@ import acm.graphics.*;
 
 public class View {
 	private int currentBoard[][];
+	@SuppressWarnings("unused")
 	private int currentSelection;
 	private GCanvas canvas;
 	final double squareSize = 100;
@@ -33,12 +34,12 @@ public class View {
 	 * 				Block id		else
 	 */
 	public int getClickedBlock(int x, int y) {
-		if (x > 4 * squareSize || y > 6* squareSize) {
+		x = Math.floorDiv(x, (int)squareSize);
+		y = Math.floorDiv(y, (int)squareSize);
+		if ((x > 3 || y > 5)||(x < 0 || y < 0)) {
 			return -1;
 		}
 		else {
-		x = Math.floorDiv(x, (int)squareSize);
-		y = Math.floorDiv(y, (int)squareSize);
 			return currentBoard[x][y]; 
 		}		
 	}
@@ -46,6 +47,7 @@ public class View {
 	public void update(int[][]currentBoard, int currentSelection) {
 		this.currentBoard = currentBoard;
 		this.currentSelection = currentSelection;
+		canvas.removeAll();
 		for(int x = 0; x < 4; x++) {
 			for(int y = 0; y < 6; y++) {
 				GRect rect = new GRect(squareSize * x, squareSize * y, squareSize, squareSize);

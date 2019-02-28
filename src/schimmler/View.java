@@ -1,9 +1,5 @@
 package schimmler;
 
-import java.awt.Color;
-
-import acm.graphics.*;
-
 public abstract class View {
 	protected int currentBoard[][];
 	protected int currentSelection;

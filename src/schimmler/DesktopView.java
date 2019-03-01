@@ -7,7 +7,7 @@ import acm.graphics.*;
 public class DesktopView extends View {
 
 	private GCanvas canvas;
-	
+
 	final double squareSize = 100;
 
 	final Color normalColors[] = { CustomColor.COLOR_WHITE.getColor(), CustomColor.COLOR_DARKPURPLE.getColor(),
@@ -41,33 +41,32 @@ public class DesktopView extends View {
 		}
 	}
 
-	@Override public void update() {
+	@Override
+	public void update() {
 		this.currentBoard = model.getBoard();
 		this.currentSelection = model.getCurrentSelection();
 		// clear canvas
 		canvas.removeAll();
-		if (model.isPuzzleSolved()) {
-			// TODO: GAMEFINISHED
-		} else {
-			for (int x = 0; x < 4; x++) {
-				for (int y = 0; y < 6; y++) {
-					GRect rect = new GRect(squareSize * x, squareSize * y, squareSize, squareSize);
-					rect.setFilled(true);
-					Color c;
-					if (currentBoard[x][y] == currentSelection) {
-						c = brightColors[currentBoard[x][y]];
-					} else {
-						c = normalColors[currentBoard[x][y]];
-					}
-					rect.setFillColor(c);
-					rect.setColor(c);
-					canvas.add(rect);
+
+		for (int x = 0; x < 4; x++) {
+			for (int y = 0; y < 6; y++) {
+				GRect rect = new GRect(squareSize * x, squareSize * y, squareSize, squareSize);
+				rect.setFilled(true);
+				Color c;
+				if (currentBoard[x][y] == currentSelection) {
+					c = brightColors[currentBoard[x][y]];
+				} else {
+					c = normalColors[currentBoard[x][y]];
 				}
+				rect.setFillColor(c);
+				rect.setColor(c);
+				canvas.add(rect);
 			}
-			GRect rect = new GRect(0, 0, squareSize * 4, squareSize * 6);
-			rect.setColor(Color.BLACK);
-			canvas.add(rect);
 		}
+		GRect rect = new GRect(0, 0, squareSize * 4, squareSize * 6);
+		rect.setColor(Color.BLACK);
+		canvas.add(rect);
+
 	}
 
 }

@@ -39,58 +39,69 @@ public class LighthouseView extends View {
 		for (byte b : data) {
 			b = 0;
 		}
+		
+		switch(model.getGamestate()) {
+		case GAMESTATE_START_SCREEN:
+			//Start Screen
+			break;
+		case GAMESTATE_RUNNING:
+			// draw game board
+			for (int x = 0; x < 4; x++) {
+				for (int y = 0; y < 6; y++) {
+					int value = currentBoard[x][y];
+					CustomColor cc;
+					if (value == currentSelection) {
+						cc = brightColors[value];
+					} else {
+						cc = normalColors[value];// use dark colors
+					}
 
-		// draw game board
-		for (int x = 0; x < 4; x++) {
-			for (int y = 0; y < 6; y++) {
-				int value = currentBoard[x][y];
-				CustomColor cc;
-				if (value == currentSelection) {
-					cc = brightColors[value];
-				} else {
-					cc = normalColors[value];// use dark colors
-				}
-
-				for (int row = 0; row < fragmentHeight; row++) {
-					for (int column = 0; column < fragmentWidth; column++) {
-						data[((RowOffset + row + fragmentHeight * y) * 28 + ColOffset + column + fragmentWidth * x)
-								* 3] = (byte) (cc.getR());
-						data[((RowOffset + row + fragmentHeight * y) * 28 + ColOffset + column + fragmentWidth * x) * 3
-								+ 1] = (byte) cc.getG();
-						data[((RowOffset + row + fragmentHeight * y) * 28 + ColOffset + column + fragmentWidth * x) * 3
-								+ 2] = (byte) cc.getB();
+					for (int row = 0; row < fragmentHeight; row++) {
+						for (int column = 0; column < fragmentWidth; column++) {
+							data[((RowOffset + row + fragmentHeight * y) * 28 + ColOffset + column + fragmentWidth * x)
+									* 3] = (byte) (cc.getR());
+							data[((RowOffset + row + fragmentHeight * y) * 28 + ColOffset + column + fragmentWidth * x) * 3
+									+ 1] = (byte) cc.getG();
+							data[((RowOffset + row + fragmentHeight * y) * 28 + ColOffset + column + fragmentWidth * x) * 3
+									+ 2] = (byte) cc.getB();
+						}
 					}
 				}
 			}
-		}
 
-		// draw moveCounter
-		int firstDigitValues[][] = digits[getFirstDigit(model.getMoveCount())].getValues();
-		int secondDigitValues[][] = digits[getSecondDigit(model.getMoveCount())].getValues();
-		final int digitWidth = 4;
+			// draw moveCounter
+			int firstDigitValues[][] = digits[getFirstDigit(model.getMoveCount())].getValues();
+			int secondDigitValues[][] = digits[getSecondDigit(model.getMoveCount())].getValues();
+			final int digitWidth = 4;
 
-		Color digitColor = calculateDigitColor();	
-		
-		for (int x = 0; x < 3; x++) {
-			for (int y = 0; y < 5; y++) {
-				if (secondDigitValues[x][y] == 1) {
-					data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + x) * 3] = (byte) (digitColor.getRed());
-					data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + x) * 3 + 1] = (byte) (digitColor.getGreen());
-					data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + x) * 3 + 2] = (byte) (digitColor.getBlue());
+			Color digitColor = calculateDigitColor();	
+			
+			for (int x = 0; x < 3; x++) {
+				for (int y = 0; y < 5; y++) {
+					if (secondDigitValues[x][y] == 1) {
+						data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + x) * 3] = (byte) (digitColor.getRed());
+						data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + x) * 3 + 1] = (byte) (digitColor.getGreen());
+						data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + x) * 3 + 2] = (byte) (digitColor.getBlue());
+					}
 				}
 			}
-		}
 
-		for (int x = 0; x < 3; x++) {
-			for (int y = 0; y < 5; y++) {
-				if (firstDigitValues[x][y] == 1) {
-					data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + digitWidth + x) * 3] = (byte) (digitColor.getRed());
-					data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + digitWidth + x) * 3 + 1] = (byte) (digitColor.getGreen());
-					data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + digitWidth + x) * 3 + 2] = (byte) (digitColor.getBlue());
+			for (int x = 0; x < 3; x++) {
+				for (int y = 0; y < 5; y++) {
+					if (firstDigitValues[x][y] == 1) {
+						data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + digitWidth + x) * 3] = (byte) (digitColor.getRed());
+						data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + digitWidth + x) * 3 + 1] = (byte) (digitColor.getGreen());
+						data[((CounterOffsetRow + y) * 28 + CounterOffsetCol + digitWidth + x) * 3 + 2] = (byte) (digitColor.getBlue());
+					}
 				}
 			}
+			break;
+		case GAMESTATE_END_SCREEN:
+			//End Screen
+			
+			
+			break;
 		}
-
 		return data;
 	}
 

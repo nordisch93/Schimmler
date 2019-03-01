@@ -1,12 +1,15 @@
 package schimmler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 
 //import acm.graphics.*;
 import schimmler.Model.Block.Fragment;
 
 public class Model {
-	private boolean puzzleSolved = false;
+	private GameState gamestate = GameState.GAMESTATE_START_SCREEN;
+
 	private Board board;
 	private int currentSelection = 0;
 	private DesktopView desktopView;
@@ -30,14 +33,18 @@ public class Model {
 	public void setCurrentSelection(int currentSelection) {
 		this.currentSelection = currentSelection;
 		updateViews();	
+	}	
+	
+	public GameState getGamestate() {
+		return gamestate;
 	}
 
 	public void moveBlock(int blockId, Direction direction) {
 		boolean success = board.moveBlock(blockId, direction);
 		if (success) {
 			moveCount++;
-			if(board.getSquares().equals(solvedBoard)){
-				puzzleSolved = true;
+			if(Arrays.deepEquals(board.getSquares(), solvedBoard)){
+				endGame();
 			}
 			updateViews();		
 		}
@@ -56,10 +63,6 @@ public class Model {
 	
 	public void removeLighthouseView() {
 		this.lighthouseView = null;
-	}
-	
-	public boolean isPuzzleSolved() {
-		return puzzleSolved;
 	}
 
 	public DesktopView getMainView() {
@@ -275,9 +278,15 @@ public class Model {
 
 	}
 
-	public void resetBoard() {
-		board.reset();		
+	public void startGame() {
+		board.reset();
+		currentSelection = 0;
+		gamestate = GameState.GAMESTATE_RUNNING;
 		updateViews();
+	}
+	
+	private void endGame() {
+		gamestate = GameState.GAMESTATE_END_SCREEN;
 	}
 
 
@@ -291,5 +300,5 @@ public class Model {
 	public int getMoveCount() {
 		return moveCount;
 	}
-	
+		
 }

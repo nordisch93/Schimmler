@@ -1,5 +1,6 @@
 package schimmler;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
@@ -66,5 +67,13 @@ public class Controller {
 		default:
 			return;	
 		}
-	}	
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("New Game")) {
+			model.resetBoard();
+		}
+		
+	}
+
 }

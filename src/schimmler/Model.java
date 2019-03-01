@@ -9,13 +9,13 @@ public class Model {
 	private boolean puzzleSolved = false;
 	private Board board;
 	private int currentSelection = 0;
-	private DesktopView mainView;
-	private ArrayList<View> views;
+	private DesktopView desktopView;
+	private LighthouseView lighthouseView;
 	private final int solvedBoard[][] = {{2,2,5,5,0,0},{2,0,0,5,1,1},{3,0,0,4,1,1},{3,3,4,4,0,0}};
+	private int moveCount = 0;
 
 	public Model() {
 		this.board = new Board();
-		this.views = new ArrayList<View>();
 	}
 	
 	
@@ -29,36 +29,33 @@ public class Model {
 
 	public void setCurrentSelection(int currentSelection) {
 		this.currentSelection = currentSelection;
-		mainView.update();
-		for(View v : views) {
-			v.update();
-		}
+		updateViews();	
 	}
 
 	public void moveBlock(int blockId, Direction direction) {
 		boolean success = board.moveBlock(blockId, direction);
 		if (success) {
-			mainView.update();
-			for (View v : views) {
-				if(board.getSquares().equals(solvedBoard)){
-					puzzleSolved = true;
-				}
-				v.update();
+			moveCount++;
+			if(board.getSquares().equals(solvedBoard)){
+				puzzleSolved = true;
 			}
+			updateViews();		
 		}
 		return;
 	}
 	
 
 	public int getClickedBlock(int x, int y) {
-		return mainView.getClickedBlock(x,y);
+		return desktopView.getClickedBlock(x,y);
 	}
 	
-	public void addView(View view) {
-		views.add(view);
-		for (View v : views) {
-			v.update();
-		}
+	public void setLighthouseView(LighthouseView view) {
+		this.lighthouseView = view;
+		lighthouseView.update();
+	}
+	
+	public void removeLighthouseView() {
+		this.lighthouseView = null;
 	}
 	
 	public boolean isPuzzleSolved() {
@@ -66,13 +63,13 @@ public class Model {
 	}
 
 	public DesktopView getMainView() {
-		return mainView;
+		return desktopView;
 	}
 
 
-	public void setMainView(DesktopView mainView) {
-		this.mainView = mainView;
-		mainView.update();
+	public void setDesktopView(DesktopView view) {
+		this.desktopView = view;
+		desktopView.update();
 	}
 
 	class Block {
@@ -249,5 +246,50 @@ public class Model {
 			return true;
 		}
 
+		public void reset() {
+			squares = new int[4][6];
+			for (int x = 0; x < 4; x++) {
+				for (int y = 0; y < 6; y++) {
+					squares[x][y] = 0;
+				}
+			}
+
+			//square block
+			blocks[0] = new Block(1, 1, 1);
+			addBlock(blocks[0]);
+			//upper left
+			blocks[1] = new Block(2, 0, 0);
+			addBlock(blocks[1]);
+			//upper right
+			blocks[2] = new Block(3, 2, 0);
+			addBlock(blocks[2]);
+			//lower right
+			blocks[3] = new Block(4, 2, 2);
+			addBlock(blocks[3]);
+			//lower left
+			blocks[4] = new Block(5, 0, 2);
+			addBlock(blocks[4]);		
+			
+			moveCount = 0;
+		}
+
 	}
+
+	public void resetBoard() {
+		board.reset();		
+		updateViews();
+	}
+
+
+	private void updateViews() {
+		desktopView.update();
+		if(lighthouseView != null)
+			lighthouseView.update();
+	}
+
+
+	public int getMoveCount() {
+		return moveCount;
+	}
+	
 }

@@ -5,11 +5,15 @@ import acm.graphics.*;
 
 import java.awt.event.*;
 
+import javax.swing.JButton;
+
 @SuppressWarnings("serial")
 public class Game extends GraphicsProgram {
 
 	Controller controller;
 	Model model;
+
+	boolean isLighthouseConnected = true;
 
 	/**
 	 * Initializes the program by adding eventListeners.
@@ -17,6 +21,10 @@ public class Game extends GraphicsProgram {
 	public void init() {
 		addMouseListeners();
 		addKeyListeners();
+
+		add(new JButton("Toggle Lighthouse"), SOUTH);
+		add(new JButton("New Game"), SOUTH);
+		addActionListeners();
 	}
 
 	/**
@@ -24,17 +32,16 @@ public class Game extends GraphicsProgram {
 	 */
 	public void run() {
 
-		boolean isLighthouseConnected = true;
 		this.model = new Model();
 		this.controller = new Controller(model);
 
 		GCanvas canvas = getGCanvas();
 		DesktopView view = new DesktopView(model, canvas);
-		model.setMainView(view);
+		model.setDesktopView(view);
 
 		if (isLighthouseConnected) {
 			LighthouseView lighthouseView = new LighthouseView(model);
-			model.addView(lighthouseView);
+			model.setLighthouseView(lighthouseView);
 		}
 	}
 
@@ -56,6 +63,20 @@ public class Game extends GraphicsProgram {
 	 */
 	public void mouseClicked(MouseEvent e) {
 		controller.mouseClicked(e);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Toggle Lighthouse")) {
+			isLighthouseConnected = !isLighthouseConnected;
+			if(isLighthouseConnected) {
+				LighthouseView lighthouseView = new LighthouseView(model);
+				model.setLighthouseView(lighthouseView);				
+			}
+			else {
+				model.removeLighthouseView();
+			}
+		}
+		else controller.actionPerformed(e);
 	}
 
 }

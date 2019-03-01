@@ -4,6 +4,16 @@ import java.io.IOException;
 
 public class LighthouseView extends View {
 	
+	final String username = "stu208059";
+	final String token = "API-TOK_V6tl-1kdb-EpFy-6hVn-jnxd";
+	
+	
+	final int RowOffset = 1;
+	final int ColOffset = 6;
+	
+	final int fragmentHeight = 2;
+	final int fragmentWidth = 4;
+	
 	final CustomColor normalColors[] = { CustomColor.COLOR_WHITE, CustomColor.COLOR_DARKPURPLE,
 			CustomColor.COLOR_DARKORANGE, CustomColor.COLOR_DARKBLUE,
 			CustomColor.COLOR_DARKGREEN, CustomColor.COLOR_DARKRED, };
@@ -21,10 +31,6 @@ public class LighthouseView extends View {
 			b = 0;
 		}
 		
-		
-		final int RowOffset = 5;
-		final int ColOffset = 1;
-		
 		for(int x = 0; x < 4; x++) {
 			for(int y = 0; y < 6; y++) {
 				int value = currentBoard[x][y];
@@ -38,11 +44,11 @@ public class LighthouseView extends View {
 					cc = normalColors[value];//use dark colors
 				}
 				
-				for(int column = 0; column < 3; column ++) {
-					for(int row = 0; row < 3; row++) {
-						data[((RowOffset+row)*14 + ColOffset + column)*3] = (byte)(cc.getR());
-						data[((RowOffset+row)*14 + ColOffset + column)*3+1] = (byte)cc.getG();
-						data[((RowOffset+row)*14 + ColOffset + column)*3+2] = (byte)cc.getB();						
+				for(int row = 0; row < fragmentHeight; row ++) {
+					for(int column = 0; column < fragmentWidth; column++) {
+						data[((RowOffset+row+fragmentHeight*y)*28 + ColOffset + column+fragmentWidth*x)*3] = (byte)(cc.getR());
+						data[((RowOffset+row+fragmentHeight*y)*28 + ColOffset + column+fragmentWidth*x)*3+1] = (byte)cc.getG();
+						data[((RowOffset+row+fragmentHeight*y)*28 + ColOffset + column+fragmentWidth*x)*3+2] = (byte)cc.getB();						
 					}
 				}
 			}
@@ -50,29 +56,8 @@ public class LighthouseView extends View {
 		
 		
 		return data;
-	}	
-	
-	private enum CustomColor {
-		COLOR_DARKRED(230, 0, 0), COLOR_DARKGREEN(0, 153, 0), COLOR_DARKORANGE(255, 102, 0),
-		COLOR_DARKPURPLE(204, 0, 153), COLOR_DARKBLUE(41, 41, 163), COLOR_WHITE(255, 255, 255),
+	}		
 
-		COLOR_LIGHTRED(255, 102, 102), COLOR_LIGHTGREEN(26, 255, 26), COLOR_LIGHTORANGE(255, 179, 128),
-		COLOR_LIGHTPURPLE(255, 77, 210), COLOR_LIGHTBLUE(114, 114, 218);
-
-		private int r;
-		private int g;
-		private int b;
-
-		private CustomColor(int r, int g, int b) {
-			this.r = r;
-			this.g = g;
-			this.b = b;
-		}
-
-		public int getR() { return r; }
-		public int getG() { return g; }
-		public int getB() { return b; }
-	}
 
 	@Override
 	public void update() {
@@ -80,7 +65,7 @@ public class LighthouseView extends View {
 		this.currentBoard = model.getBoard();
 		this.currentSelection = model.getCurrentSelection();
 
-		LighthouseDisplay display = new LighthouseDisplay("MyUsername", "MyToken");
+		LighthouseDisplay display = new LighthouseDisplay(username, token);
 		
 		// Try connecting to the display
 		try {

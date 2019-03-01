@@ -10,12 +10,12 @@ public class DesktopView extends View {
 	
 	final double squareSize = 100;
 
-	final Color normalColors[] = { CustomColor.COLOR_WHITE.getValue(), CustomColor.COLOR_DARKPURPLE.getValue(),
-			CustomColor.COLOR_DARKORANGE.getValue(), CustomColor.COLOR_DARKBLUE.getValue(),
-			CustomColor.COLOR_DARKGREEN.getValue(), CustomColor.COLOR_DARKRED.getValue(), };
-	final Color brightColors[] = { CustomColor.COLOR_WHITE.getValue(), CustomColor.COLOR_LIGHTPURPLE.getValue(),
-			CustomColor.COLOR_LIGHTORANGE.getValue(), CustomColor.COLOR_LIGHTBLUE.getValue(),
-			CustomColor.COLOR_LIGHTGREEN.getValue(), CustomColor.COLOR_LIGHTRED.getValue(), };
+	final Color normalColors[] = { CustomColor.COLOR_WHITE.getColor(), CustomColor.COLOR_DARKPURPLE.getColor(),
+			CustomColor.COLOR_DARKORANGE.getColor(), CustomColor.COLOR_DARKBLUE.getColor(),
+			CustomColor.COLOR_DARKGREEN.getColor(), CustomColor.COLOR_DARKRED.getColor(), };
+	final Color brightColors[] = { CustomColor.COLOR_WHITE.getColor(), CustomColor.COLOR_LIGHTPURPLE.getColor(),
+			CustomColor.COLOR_LIGHTORANGE.getColor(), CustomColor.COLOR_LIGHTBLUE.getColor(),
+			CustomColor.COLOR_LIGHTGREEN.getColor(), CustomColor.COLOR_LIGHTRED.getColor(), };
 
 	public DesktopView(Model model, GCanvas canvas) {
 		super(model);
@@ -67,24 +67,6 @@ public class DesktopView extends View {
 			GRect rect = new GRect(0, 0, squareSize * 4, squareSize * 6);
 			rect.setColor(Color.BLACK);
 			canvas.add(rect);
-		}
-	}
-
-	private enum CustomColor {
-		COLOR_DARKRED(230, 0, 0), COLOR_DARKGREEN(0, 153, 0), COLOR_DARKORANGE(255, 102, 0),
-		COLOR_DARKPURPLE(204, 0, 153), COLOR_DARKBLUE(41, 41, 163), COLOR_WHITE(255, 255, 255),
-
-		COLOR_LIGHTRED(255, 102, 102), COLOR_LIGHTGREEN(26, 255, 26), COLOR_LIGHTORANGE(255, 179, 128),
-		COLOR_LIGHTPURPLE(255, 77, 210), COLOR_LIGHTBLUE(114, 114, 218);
-
-		private Color value;
-
-		private CustomColor(int r, int g, int b) {
-			this.value = new Color(r, g, b);
-		}
-
-		public Color getValue() {
-			return value;
 		}
 	}
 

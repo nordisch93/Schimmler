@@ -24,7 +24,7 @@ public class Game extends GraphicsProgram {
 	 */
 	public void run() {
 
-		boolean isLighthouseConnected = false;
+		boolean isLighthouseConnected = true;
 		this.model = new Model();
 		this.controller = new Controller(model);
 

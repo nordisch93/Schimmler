@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 /**
  * The Controller class handles the users inputs provided by Game
  * and passes them on to the model via the according methods.
+ * 
+ * @author Thomas Fuhrt, Thomas Schubert
  *
  */
 public class Controller {

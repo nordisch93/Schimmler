@@ -6,7 +6,7 @@ import java.io.IOException;
 public class LighthouseView extends View {
 
 	final String username = "stu208059";
-	final String token = "API-TOK_V6tl-1kdb-EpFy-6hVn-jnxd";
+	final String token = "API-TOK_2O+h-pY6S-SJeA-/AoY-J5eX";
 
 	final int RowOffset = 1;
 	final int ColOffset = 1;
@@ -127,7 +127,7 @@ public class LighthouseView extends View {
 	@Override
 	public void update() {
 
-		this.currentBoard = model.getBoard();
+		this.currentBoard = model.getBoardState();
 		this.currentSelection = model.getCurrentSelection();
 
 		LighthouseDisplay display = new LighthouseDisplay(username, token);

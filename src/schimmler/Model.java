@@ -17,29 +17,65 @@ public class Model {
 	private final int solvedBoard[][] = {{2,2,5,5,0,0},{2,0,0,5,1,1},{3,0,0,4,1,1},{3,3,4,4,0,0}};
 	private int moveCount = 0;
 
+	/**
+	 * Standard constructor, creates a news board.
+	 * 
+	 */
 	public Model() {
 		this.board = new Board();
 	}
 	
-	
-	public int[][] getBoard(){
+	/**
+	 * Returns an int array with the current state of the model's board.
+	 * 
+	 * @return The state of the model's board.
+	 */
+	public int[][] getBoardState(){
 		return board.getSquares();
 	}
 
+	/**
+	 * Returns the Id of the currently selected block.
+	 * 
+	 * @return Id of the currently slected block
+	 */
 	public int getCurrentSelection() {
 		return currentSelection;
 	}
 
+	/**
+	 * Set the current selection to the ID of a block.
+	 * 
+	 * @param currentSelection	Id of the block that is to be selected.
+	 */
 	public void setCurrentSelection(int currentSelection) {
 		this.currentSelection = currentSelection;
 		updateViews();	
 	}	
 	
+	/**
+	 * Returns the current gamestate.
+	 * @return	{@code GAMESTATE_START_SCREEN}	if the program was just started
+	 * 			{@code GAMESTATE_RUNNING}		if a game is running
+	 * 			{@code GAMESTATE_END_SCREEN}	if a game was finished
+	 */
 	public GameState getGamestate() {
 		return gamestate;
 	}
 
+	/**
+	 * Tries to move a block on the board and checks whether the move solved the puzzle.
+	 * 
+	 * If the move was valid and ended the game, the endGame routine is called and the views are updated.
+	 * 
+	 * @param blockId		The Id of the block that is to be moved, must be element of {1,2,3,4,5}
+	 * @param direction		The direction in which the block is to be moved
+	 * 
+	 * @throws IllegalArgumentException if blockId was invalid (< 1 or > 5)  
+	 */
 	public void moveBlock(int blockId, Direction direction) {
+		if(blockId < 1 || blockId > 5)
+			throw(new IllegalArgumentException("called moveBlock with invalid BlockId" + Integer.toString(blockId)));
 		boolean success = board.moveBlock(blockId, direction);
 		if (success) {
 			moveCount++;
@@ -50,43 +86,101 @@ public class Model {
 		}
 		return;
 	}
-	
 
+	/**
+	 * Retrieves the Id of the block that was clicked from the Desktop view.
+	 * 
+	 * @param x		The x-coordinate of the mouseClickEvent
+	 * @param y		The y-coordinate of the mouseClickEvent
+	 * 
+	 * @return -1					 			if click was outside of board
+	 * 			0								if an empty field was clicked
+	 * 			BlockId of the clicked Block	else
+	 *		
+	 */
 	public int getClickedBlock(int x, int y) {
 		return desktopView.getClickedBlock(x,y);
 	}
 	
+	/**
+	 * Sets the LighthouseView of the model and updates it.
+	 * 
+	 * @param view		The new LighthouseView
+	 */
 	public void setLighthouseView(LighthouseView view) {
 		this.lighthouseView = view;
 		lighthouseView.update();
 	}
 	
+	/**
+	 * Removes the current lighthouseView from the model.
+	 */
 	public void removeLighthouseView() {
 		this.lighthouseView = null;
 	}
 
+	/**
+	 * returns the desktopView of the model.
+	 * 
+	 * @return	the DesktopView of the model
+	 */
 	public DesktopView getMainView() {
 		return desktopView;
 	}
 
-
+	/**
+	 * Sets the desktopViiew of the model and updates it.
+	 * 
+	 * @param view the new desktopView
+	 */
 	public void setDesktopView(DesktopView view) {
 		this.desktopView = view;
 		desktopView.update();
 	}
 
+	/**
+	 * The class represents one of the playing blocks that are moved around on the board.
+	 * 
+	 * It consists of 3 or 4 fragments, which each represent a single square on the playing board, 
+	 * which implement their own collision checks and move methods.
+	 * 
+	 * @author Thomas Fuhrt, Thomas Schubert
+	 *
+	 */
 	class Block {
-		int type;
+		/**
+		 * The Id of the block, which specifies both the shape of the block and gives it a unique identifier.
+		 */
+		int blockId;
+		/**
+		 * The position coordinates on the playing board, using a coordinate system with its origin at the top right
+		 * corner of the board. We have (0 <= x <= 2) and (0 <= y <= 4).
+		 */
 		int x;
 		int y;
+		/**
+		 * The list of fragments that the block consists of. A block has 4 fragments if its Id is 1 (the square block)
+		 * or 3 fragments else.
+		 */
 		ArrayList<Fragment> fragments;
 
-		public Block(int type, int x, int y) {
-			this.type = type;
+		/**
+		 * Constructs a new block of with a given Id at a given position.
+		 * 
+		 * @param blockId		The Id of the block. (must be 1 <= blockId <= 5=
+		 * @param x				The x-coordinate (must be 0 <= x <= 2)
+		 * @param y				The y-coordinate (must be 0 <= y <= 4)
+		 */
+		public Block(int blockId, int x, int y) {
+			if(blockId < 1 || blockId > 5) {
+				throw(new IllegalArgumentException(""));
+			}
+			
+			this.blockId = blockId;
 			this.x = x;
 			this.y = y;
 			fragments = new ArrayList<Fragment>();
-			switch (type) {
+			switch (blockId) {
 			case 1:		//square block
 				fragments.add(new Fragment(0, 0));
 				fragments.add(new Fragment(1, 0));
@@ -134,7 +228,7 @@ public class Model {
 		}
 
 		public int getType() {
-			return type;
+			return blockId;
 		}
 
 		class Fragment {
@@ -188,7 +282,7 @@ public class Model {
 
 		private void addBlock(Block block) {
 			for (Fragment f : block.fragments) {
-				squares[block.getX() + f.x][block.getY() + f.y] = block.type;
+				squares[block.getX() + f.x][block.getY() + f.y] = block.blockId;
 			}
 		}
 		
@@ -228,7 +322,7 @@ public class Model {
 				int fragmentY = blocks[blockId-1].getY() + f.y;
 
 				if (squares[fragmentX + deltaX][fragmentY + deltaY] != 0
-						&& squares[fragmentX + deltaX][fragmentY + deltaY] != blocks[blockId-1].type) {
+						&& squares[fragmentX + deltaX][fragmentY + deltaY] != blocks[blockId-1].blockId) {
 					// move is blocked by other blocks
 					return false;
 				}
@@ -244,7 +338,7 @@ public class Model {
 			blocks[blockId-1].setY(blocks[blockId-1].getY() + deltaY);			
 
 			for (Fragment f : blocks[blockId-1].fragments) {
-				squares[blocks[blockId-1].getX() + f.x][blocks[blockId-1].getY() + f.y] = blocks[blockId-1].type;
+				squares[blocks[blockId-1].getX() + f.x][blocks[blockId-1].getY() + f.y] = blocks[blockId-1].blockId;
 			}
 			return true;
 		}

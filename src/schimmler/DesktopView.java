@@ -28,8 +28,9 @@ public class DesktopView extends View {
 	 * 
 	 * @param x x position of mouse
 	 * @param y y position of mouse
-	 * @return -1 if click was outside of board 0 if empty field was clicked Block
-	 *         id else
+	 * @return -1					 			if click was outside of board
+	 * 			0								if an empty field was clicked
+	 *          BlockId of the clicked Block 	else
 	 */
 	public int getClickedBlock(int x, int y) {
 		x = Math.floorDiv(x, (int) squareSize);
@@ -43,7 +44,7 @@ public class DesktopView extends View {
 
 	@Override
 	public void update() {
-		this.currentBoard = model.getBoard();
+		this.currentBoard = model.getBoardState();
 		this.currentSelection = model.getCurrentSelection();
 		// clear canvas
 		canvas.removeAll();

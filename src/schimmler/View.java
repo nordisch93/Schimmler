@@ -10,7 +10,7 @@ public abstract class View {
 	
 	public View(Model model) {
 		this.model = model;
-		this.currentBoard = model.getBoard();
+		this.currentBoard = model.getBoardState();
 		this.currentSelection = model.getCurrentSelection();
 	}
 	
